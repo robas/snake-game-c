@@ -1,17 +1,17 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#define boardWidth 12
-#define boardHeight 12
+#include <ncurses.h>
 
-#include "coordinates.h"
+#include "snake.h"
 
-char board[boardWidth][boardHeight];
+int max_x, max_y;
 
-void configureEmptyBoard();
+void initializeBoard();
+void destroyBoard();
 void drawBoard();
-void pinOnBoard(Coordinates pos, char symbol);
-Coordinates getNewPosition(Coordinates actualPos, Coordinates movement);
-Coordinates movePlayer(Coordinates actualPos, Coordinates movement);
+int getNewDirection(Snake snk, int direction);
+void processMovement(Snake *snk);
+bool isThereCollision(Snake snk);
 
 #endif

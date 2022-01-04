@@ -6,9 +6,4 @@ typedef struct str_coordinate {
     int y;
 } Coordinates;
 
-extern Coordinates UP;
-extern Coordinates DOWN;
-extern Coordinates LEFT;
-extern Coordinates RIGHT;
-
 #endif

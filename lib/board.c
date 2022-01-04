@@ -2,70 +2,63 @@
 
 #include <stdio.h>
 
-#include "coordinates.h"
+#include "snake.h"
 
-void configureEmptyBoard() {
-    for (int i = 0; i < boardWidth; i++) {
-        for (int j = 0; j < boardHeight; j++) {
-            board[i][j] = ' ';
-        }
-    }
-    for (int i = 0; i < boardHeight; i++) {
-        board[0][i] = '#';
-        board[boardWidth - 1][i] = '#';
-    }
-    for (int i = 0; i < boardWidth; i++) {
-        board[i][0] = '#';
-        board[i][boardHeight - 1] = '#';
-    }
+void initializeBoard() {
+    initscr();
+    noecho();
+    curs_set(FALSE);
+    raw();
+    keypad(stdscr, TRUE);
+    timeout(10);
+    getmaxyx(stdscr, max_y, max_x);
 }
 
-void resetScreen() {
-    for (int i = 0; i < 5; i++) {
-        printf("\n");
+void destroyBoard() {
+    endwin();
+}
+
+void drawBoard(Snake snk) {
+    getmaxyx(stdscr, max_y, max_x);
+    clear();
+    mvprintw(snk.pos.x, snk.pos.y, "O");
+    refresh();
+}
+
+bool isOpositeDirection(int dir1, int dir2) {
+    if (dir1 + dir2 == 0) {
+        return TRUE;
     }
+    return FALSE;
 }
 
-void drawBoard() {
-    resetScreen();
-    for (int j = 0; j < boardHeight; j++) {
-        for (int i = 0; i < boardWidth; i++) {
-            printf("%c", board[i][j]);
-        }
-        printf("\n");
-    }
-}
-
-void pinOnBoard(Coordinates pos, char symbol) {
-    board[pos.x][pos.y] = symbol;
-}
-
-Coordinates getNewPosition(Coordinates actualPos, Coordinates movement) {
-    Coordinates newPos;
-    int newX = actualPos.x + movement.x;
-    int newY = actualPos.y + movement.y;
-
-    if (newX > 0 && newX < boardWidth - 1) {
-        newPos.x = newX;
+int getNewDirection(Snake snk, int direction) {
+    if (isOpositeDirection(snk.direction, direction)) {
+        return snk.direction;
     } else {
-        if (newX == 0) newPos.x = boardWidth - 2;
-        if (newX == boardWidth - 1) newPos.x = 1;
+        return direction;
     }
-
-    if (newY > 0 && newY < boardHeight - 1) {
-        newPos.y = newY;
-    } else {
-        if (newY == 0) newPos.y = boardHeight - 2;
-        if (newY == boardHeight - 1) newPos.y = 1;
+}
+bool isThereCollision(Snake snk) {
+    if (snk.pos.x > max_x || snk.pos.x < 0 || snk.pos.y > max_y || snk.pos.y < 0) {
+        return TRUE;
     }
-
-    return newPos;
+    return FALSE;
 }
 
-Coordinates movePlayer(Coordinates actualPos, Coordinates movement) {
-    pinOnBoard(actualPos, ' ');
-    actualPos = getNewPosition(actualPos, movement);
-
-    pinOnBoard(actualPos, 'x');
-    return actualPos;
+void processMovement(Snake *snk) {
+    switch (snk->direction) {
+        case UP_DIR:
+            snk->pos.x--;
+            break;
+        case DOWN_DIR:
+            snk->pos.x++;
+            break;
+        case LEFT_DIR:
+            snk->pos.y--;
+            break;
+        case RIGHT_DIR:
+            snk->pos.y++;
+            break;
+    }
 }

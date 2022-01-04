@@ -1,14 +1,16 @@
 GCC = gcc
 INCLUDES = -I ./lib
-CC = ${GCC} ${INCLUDES}
-OBJS = main.o coordinates.o board.o
+CFLAGS = -Wall
+LDFLAGS = -lncurses
+CC = ${GCC} ${CFLAGS} ${INCLUDES}
+OBJS = main.o board.o snake.o
 EXE = target.out
 SRC_DIR = ./lib
 .PHONY: all clean
 
 all: ${OBJS}
 	@echo "Building..."
-	${CC} ${OBJS} -o ${EXE}
+	${CC} ${OBJS} -o ${EXE} ${LDFLAGS}
 	-rm -f *.o
 
 main.o: ./main.c
@@ -17,8 +19,8 @@ main.o: ./main.c
 board.o: ${SRC_DIR}/board.c
 	${CC} -c ${SRC_DIR}/board.c
 
-coordinates.o: ${SRC_DIR}/coordinates.c
-	${CC} -c ${SRC_DIR}/coordinates.c
+snake.o: ${SRC_DIR}/snake.c
+	${CC} -c ${SRC_DIR}/snake.c
 
 clean:
 	@echo "Cleaning up..."
