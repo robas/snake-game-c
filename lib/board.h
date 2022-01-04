@@ -7,11 +7,11 @@
 
 int max_x, max_y;
 
-void initializeBoard();
+WINDOW *initializeBoard();
 void destroyBoard();
-void drawBoard();
+void drawBoard(WINDOW *window, Snake snk);
 int getNewDirection(Snake snk, int direction);
 void processMovement(Snake *snk);
-bool isThereCollision(Snake snk);
+bool isThereCollision(WINDOW *win, Snake snk);
 
 #endif

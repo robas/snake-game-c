@@ -7,9 +7,9 @@
 // #include "coordinates.h"
 #include "snake.h"
 
-#define initialXPos 0
-#define initialYPos 0
-#define INITIAL_DELAY 250000
+#define initialXPos 1
+#define initialYPos 1
+#define INITIAL_DELAY 200000
 
 Snake snake = {{initialXPos, initialYPos}, RIGHT_DIR};
 bool runGame = TRUE;
@@ -38,14 +38,14 @@ void handleCmd() {
 }
 
 int main() {
-    initializeBoard();
-    drawBoard(snake);
+    WINDOW *field = initializeBoard();
+    drawBoard(field, snake);
 
     while (runGame == TRUE) {
         handleCmd();
         processMovement(&snake);
-        drawBoard(snake);
-        if (isThereCollision(snake)) {
+        drawBoard(field, snake);
+        if (isThereCollision(field, snake)) {
             runGame = FALSE;
         }
         usleep(gameSpeed);
