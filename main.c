@@ -9,7 +9,7 @@
 #define initialXPos 1
 #define initialYPos 1
 #define INITIAL_DELAY 200000
-
+#define SPEEDUP_GAME gameSpeed -= gameSpeed > 10000 ? 10000 : 0
 Snake snake;
 Apple apple;
 bool runGame = TRUE;
@@ -31,7 +31,7 @@ void handleCmd() {
             snake.direction = getNewDirection(snake, RIGHT_DIR);
             break;
         case 'w':
-            gameSpeed -= 10000;
+            SPEEDUP_GAME;
             break;
         case 'q':
             runGame = FALSE;
@@ -52,6 +52,7 @@ int main() {
         processMovement(&snake, &apple);
         if (apple.eaten) {
             apple = initializeApple(field, snake);
+            SPEEDUP_GAME;
         }
         drawBoard(field, snake, apple);
         if (isThereWallCollision(field, snake)) {
