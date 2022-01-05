@@ -14,7 +14,7 @@ void drawBoard(WINDOW *win, Snake snk, Apple a);
 int getNewDirection(Snake snk, int direction);
 void processMovement(Snake *snk, Apple *a);
 Coordinates getRandomPositionOtherThan(WINDOW *w, Coordinates pos[], int len);
-bool isThereWallCollision(WINDOW *win, Snake snk);
+bool isThereWallOrSelfCollision(WINDOW *win, Snake snk);
 bool isThereCollision(Coordinates c, Coordinates pos[], int len);
 
 #endif

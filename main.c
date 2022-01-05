@@ -9,7 +9,7 @@
 #define initialXPos 1
 #define initialYPos 1
 #define INITIAL_DELAY 200000
-#define SPEEDUP_GAME gameSpeed -= gameSpeed > 10000 ? 10000 : 0
+#define SPEEDUP_GAME gameSpeed -= gameSpeed > 15000 ? 5000 : 0
 Snake snake;
 Apple apple;
 bool runGame = TRUE;
@@ -55,7 +55,7 @@ int main() {
             SPEEDUP_GAME;
         }
         drawBoard(field, snake, apple);
-        if (isThereWallCollision(field, snake)) {
+        if (isThereWallOrSelfCollision(field, snake)) {
             runGame = FALSE;
         }
         usleep(gameSpeed);

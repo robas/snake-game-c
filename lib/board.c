@@ -71,10 +71,15 @@ int getNewDirection(Snake snk, int direction) {
         return direction;
     }
 }
-bool isThereWallCollision(WINDOW *win, Snake snk) {
+bool isThereWallOrSelfCollision(WINDOW *win, Snake snk) {
     getmaxyx(win, max_y, max_x);
     if (snk.pos[0].x >= max_x - 1 || snk.pos[0].x <= 0 || snk.pos[0].y >= max_y - 1 || snk.pos[0].y <= 0) {
         return TRUE;
+    }
+    for (int i = 1; i < snk.size; i++) {
+        if (snk.pos[0].x == snk.pos[i].x && snk.pos[0].y == snk.pos[i].y) {
+            return TRUE;
+        }
     }
     return FALSE;
 }
