@@ -9,7 +9,8 @@
 #define DOWN_DIR -2
 
 typedef struct str_snake {
-    Coordinates pos;
+    Coordinates pos[256];
+    int size;
     int direction;
 } Snake;
 

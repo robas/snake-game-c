@@ -45,7 +45,10 @@ void drawBoard(WINDOW *win, Snake snk) {
     getmaxyx(win, max_y, max_x);
     wclear(win);
     draw_borders(win);
-    mvwprintw(win, snk.pos.y, snk.pos.x, "O");
+    for (int i = 0; i < snk.size; i++) {
+        mvwprintw(win, snk.pos[i].y, snk.pos[i].x, "O");
+    }
+
     wrefresh(win);
 }
 
@@ -65,25 +68,28 @@ int getNewDirection(Snake snk, int direction) {
 }
 bool isThereCollision(WINDOW *win, Snake snk) {
     getmaxyx(win, max_y, max_x);
-    if (snk.pos.x >= max_x || snk.pos.x <= 0 || snk.pos.y >= max_y - 1 || snk.pos.y <= 0) {
+    if (snk.pos[0].x >= max_x || snk.pos[0].x <= 0 || snk.pos[0].y >= max_y - 1 || snk.pos[0].y <= 0) {
         return TRUE;
     }
     return FALSE;
 }
 
 void processMovement(Snake *snk) {
+    for (int i = snk->size - 1; i > 0; i--) {
+        snk->pos[i] = snk->pos[i - 1];
+    }
     switch (snk->direction) {
         case UP_DIR:
-            snk->pos.y--;
+            snk->pos[0].y--;
             break;
         case DOWN_DIR:
-            snk->pos.y++;
+            snk->pos[0].y++;
             break;
         case LEFT_DIR:
-            snk->pos.x--;
+            snk->pos[0].x--;
             break;
         case RIGHT_DIR:
-            snk->pos.x++;
+            snk->pos[0].x++;
             break;
     }
 }

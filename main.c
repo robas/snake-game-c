@@ -11,7 +11,7 @@
 #define initialYPos 1
 #define INITIAL_DELAY 200000
 
-Snake snake = {{initialXPos, initialYPos}, RIGHT_DIR};
+Snake snake;
 bool runGame = TRUE;
 int gameSpeed = INITIAL_DELAY;
 
@@ -40,6 +40,14 @@ void handleCmd() {
 int main() {
     WINDOW *field = initializeBoard();
     drawBoard(field, snake);
+    snake.size = 3;
+    snake.direction = RIGHT_DIR;
+    snake.pos[0].x = initialXPos + 2;
+    snake.pos[0].y = initialYPos;
+    snake.pos[1].x = initialXPos + 1;
+    snake.pos[1].y = initialYPos;
+    snake.pos[2].x = initialXPos;
+    snake.pos[3].y = initialYPos;
 
     while (runGame == TRUE) {
         handleCmd();
