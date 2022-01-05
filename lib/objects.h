@@ -1,6 +1,8 @@
 #ifndef SNAKE_H
 #define SNAKE_H
 
+#include <ncurses.h>
+
 #include "coordinates.h"
 
 #define RIGHT_DIR 1
@@ -13,5 +15,13 @@ typedef struct str_snake {
     int size;
     int direction;
 } Snake;
+
+typedef struct str_apple {
+    Coordinates pos;
+    bool eaten;
+} Apple;
+
+Snake initializeSnake(int x, int y);
+Apple initializeApple(WINDOW *field, Snake snk);
 
 #endif

@@ -4,14 +4,14 @@
 #include <unistd.h>
 
 #include "board.h"
-// #include "coordinates.h"
-#include "snake.h"
+#include "objects.h"
 
 #define initialXPos 1
 #define initialYPos 1
 #define INITIAL_DELAY 200000
 
 Snake snake;
+Apple apple;
 bool runGame = TRUE;
 int gameSpeed = INITIAL_DELAY;
 
@@ -30,6 +30,9 @@ void handleCmd() {
         case KEY_RIGHT:
             snake.direction = getNewDirection(snake, RIGHT_DIR);
             break;
+        case 'w':
+            gameSpeed -= 10000;
+            break;
         case 'q':
             runGame = FALSE;
         default:
@@ -39,21 +42,19 @@ void handleCmd() {
 
 int main() {
     WINDOW *field = initializeBoard();
-    drawBoard(field, snake);
-    snake.size = 3;
-    snake.direction = RIGHT_DIR;
-    snake.pos[0].x = initialXPos + 2;
-    snake.pos[0].y = initialYPos;
-    snake.pos[1].x = initialXPos + 1;
-    snake.pos[1].y = initialYPos;
-    snake.pos[2].x = initialXPos;
-    snake.pos[3].y = initialYPos;
+    snake = initializeSnake(initialXPos, initialYPos);
+    apple = initializeApple(field, snake);
+
+    drawBoard(field, snake, apple);
 
     while (runGame == TRUE) {
         handleCmd();
-        processMovement(&snake);
-        drawBoard(field, snake);
-        if (isThereCollision(field, snake)) {
+        processMovement(&snake, &apple);
+        if (apple.eaten) {
+            apple = initializeApple(field, snake);
+        }
+        drawBoard(field, snake, apple);
+        if (isThereWallCollision(field, snake)) {
             runGame = FALSE;
         }
         usleep(gameSpeed);
